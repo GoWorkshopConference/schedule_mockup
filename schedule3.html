@@ -57,17 +57,19 @@
       z-index: 5;
     }
 
-    .workshop {
+    .large,
+    .normal {
       background-color: #e6f3ff;
       cursor: pointer;
     }
 
-    .workshop:hover {
+    .large:hover,
+    .normal:hover {
       background-color: #cce1ff;
     }
 
     .break {
-      display: none;
+      background-color: #f2f2f2;
     }
 
     .opening,
@@ -90,10 +92,6 @@
       background-color: #c8c2c2;
       white-space: normal;
       text-align: left;
-    }
-
-    .large-booth {
-      /* background-color: #d4edda; */
     }
 
     .selected {
@@ -250,215 +248,199 @@
     document.getElementById('current-date').textContent = currentDate.toLocaleDateString('ja-JP');
 
     // スケジュールデータ
-    const scheduleData = {
-      "10:00": [{ name: "オープニング", duration: 15, type: "opening" }],
-      "10:15": [
-        { name: "大ブース Workshop A1", duration: 60 },
-        { name: "大ブース Workshop B1", duration: 60 },
-        { name: "大ブース Workshop C1", duration: 60 },
-        { name: "Workshop D1", duration: 45 },
-        { name: "Workshop E1", duration: 45 },
-        { name: "Workshop F1", duration: 45 },
-        { name: "Workshop G1", duration: 45 },
-        { name: "Workshop H1", duration: 45 },
-        { name: "Workshop I1", duration: 45 },
-        { name: "Workshop J1", duration: 45 },
-        { name: "Workshop K1", duration: 45 },
-        { name: "Workshop L1", duration: 45 },
-        { name: "Workshop M1", duration: 45 },
-        { name: "Workshop N1", duration: 45 },
-        { name: "Workshop O1", duration: 45 }
-      ],
-      "11:15": [
-        { name: "Workshop D1", duration: 45 },
-        { name: "Workshop E1", duration: 45 },
-        { name: "Workshop F1", duration: 45 },
-        { name: "Workshop G1", duration: 45 },
-        { name: "Workshop H1", duration: 45 },
-        { name: "Workshop I1", duration: 45 },
-        { name: "Workshop J1", duration: 45 },
-        { name: "Workshop K1", duration: 45 },
-        { name: "Workshop L1", duration: 45 },
-        { name: "Workshop M1", duration: 45 },
-        { name: "Workshop N1", duration: 45 },
-        { name: "Workshop O1", duration: 45 }
-      ],
-      "11:45": [
-        { name: "大ブース Workshop A2", duration: 60 },
-        { name: "大ブース Workshop B2", duration: 60 },
-        { name: "大ブース Workshop C2", duration: 60 },
-      ],
-      "12:15": [
-        { name: "Workshop D1", duration: 45 },
-        { name: "Workshop E1", duration: 45 },
-        { name: "Workshop F1", duration: 45 },
-        { name: "Workshop G1", duration: 45 },
-        { name: "Workshop H1", duration: 45 },
-        { name: "Workshop I1", duration: 45 },
-        { name: "Workshop J1", duration: 45 },
-        { name: "Workshop K1", duration: 45 },
-        { name: "Workshop L1", duration: 45 },
-        { name: "Workshop M1", duration: 45 },
-        { name: "Workshop N1", duration: 45 },
-        { name: "Workshop O1", duration: 45 }
-      ],
-      "13:00": [{ name: "昼食休憩", duration: 60, type: "lunch" }],
-      "14:00": [
-        { name: "大ブース Workshop A3", duration: 60 },
-        { name: "大ブース Workshop B3", duration: 60 },
-        { name: "大ブース Workshop C3", duration: 60 },
-        { name: "Workshop D3", duration: 45 },
-        { name: "Workshop E3", duration: 45 },
-        { name: "Workshop F3", duration: 45 },
-        { name: "Workshop G3", duration: 45 },
-        { name: "Workshop H3", duration: 45 },
-        { name: "Workshop I3", duration: 45 },
-        { name: "Workshop J3", duration: 45 },
-        { name: "Workshop K3", duration: 45 },
-        { name: "Workshop L3", duration: 45 },
-        { name: "Workshop M3", duration: 45 },
-        { name: "Workshop N3", duration: 45 },
-        { name: "Workshop O3", duration: 45 }
-      ],
-      // "15:00": [
-      //   { name: "大ブース Workshop A3 (休憩)", duration: 30, type: "break" },
-      //   { name: "大ブース Workshop B3 (休憩)", duration: 30, type: "break" },
-      //   { name: "大ブース Workshop C3 (休憩)", duration: 30, type: "break" },
-      //   { name: "Workshop D3 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop E3 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop F3 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop G3 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop H3 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop I3 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop J3 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop K3 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop L3 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop M3 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop N3 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop O3 (休憩)", duration: 15, type: "break" }
-      // ],
-      "15:30": [
-        { name: "大ブース Workshop A4", duration: 60 },
-        { name: "大ブース Workshop B4", duration: 60 },
-        { name: "大ブース Workshop C4", duration: 60 },
-        { name: "Workshop D4", duration: 45 },
-        { name: "Workshop E4", duration: 45 },
-        { name: "Workshop F4", duration: 45 },
-        { name: "Workshop G4", duration: 45 },
-        { name: "Workshop H4", duration: 45 },
-        { name: "Workshop I4", duration: 45 },
-        { name: "Workshop J4", duration: 45 },
-        { name: "Workshop K4", duration: 45 },
-        { name: "Workshop L4", duration: 45 },
-        { name: "Workshop M4", duration: 45 },
-        { name: "Workshop N4", duration: 45 },
-        { name: "Workshop O4", duration: 45 }
-      ],
-      // "16:30": [
-      //   { name: "大ブース Workshop A4 (休憩)", duration: 30, type: "break" },
-      //   { name: "大ブース Workshop B4 (休憩)", duration: 30, type: "break" },
-      //   { name: "大ブース Workshop C4 (休憩)", duration: 30, type: "break" },
-      //   { name: "Workshop D4 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop E4 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop F4 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop G4 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop H4 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop I4 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop J4 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop K4 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop L4 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop M4 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop N4 (休憩)", duration: 15, type: "break" },
-      //   { name: "Workshop O4 (休憩)", duration: 15, type: "break" }
-      // ],
-      "17:00": [
-        { name: "大ブース Workshop A5", duration: 15 },
-        { name: "大ブース Workshop B5", duration: 15 },
-        { name: "大ブース Workshop C5", duration: 15 },
-        { name: "Workshop D5", duration: 15 },
-        { name: "Workshop E5", duration: 15 },
-        { name: "Workshop F5", duration: 15 },
-        { name: "Workshop G5", duration: 15 },
-        { name: "Workshop H5", duration: 15 },
-        { name: "Workshop I5", duration: 15 },
-        { name: "Workshop J5", duration: 15 },
-        { name: "Workshop K5", duration: 15 },
-        { name: "Workshop L5", duration: 15 },
-        { name: "Workshop M5", duration: 15 },
-        { name: "Workshop N5", duration: 15 },
-        { name: "Workshop O5", duration: 15 }
-      ],
-      "17:15": [{ name: "エンディング", duration: 15, type: "ending" }],
-      "17:30": [{ name: "参加者退場", duration: 30, type: "exit" }],
-      "18:00": [{ name: "会場片付け", duration: 45, type: "cleanup" }],
-      "18:45": [{ name: "完全撤収", duration: 15, type: "end" }],
-      "19:00": [{ name: "撤収済み", duration: 15, type: "after" }]
-    };
+    const scheduleData = [
+      { time: "10:00", events: [{ name: "オープニング", duration: 15, type: "opening", colSpan: 16 }] },
+      {
+        time: "10:15", events: [
+          { name: "大ブース Workshop A1", duration: 60, type: "large", col: 1 },
+          { name: "大ブース Workshop B1", duration: 60, type: "large", col: 2 },
+          { name: "大ブース Workshop C1", duration: 60, type: "large", col: 3 },
+          { name: "Workshop D1", duration: 45, type: "normal", col: 4 },
+          { name: "Workshop E1", duration: 45, type: "normal", col: 5 },
+          { name: "Workshop F1", duration: 45, type: "normal", col: 6 },
+          { name: "Workshop G1", duration: 45, type: "normal", col: 7 },
+          { name: "Workshop H1", duration: 45, type: "normal", col: 8 },
+          { name: "Workshop I1", duration: 45, type: "normal", col: 9 },
+          { name: "Workshop J1", duration: 45, type: "normal", col: 10 },
+          { name: "Workshop K1", duration: 45, type: "normal", col: 11 },
+          { name: "Workshop L1", duration: 45, type: "normal", col: 12 },
+          { name: "Workshop M1", duration: 45, type: "normal", col: 13 },
+          { name: "Workshop N1", duration: 45, type: "normal", col: 14 },
+          { name: "Workshop O1", duration: 45, type: "normal", col: 15 }
+        ]
+      },
+      {
+        time: "11:15", events: [
+          { name: "Workshop D2", duration: 45, type: "normal", col: 4 },
+          { name: "Workshop E2", duration: 45, type: "normal", col: 5 },
+          { name: "Workshop F2", duration: 45, type: "normal", col: 6 },
+          { name: "Workshop G2", duration: 45, type: "normal", col: 7 },
+          { name: "Workshop H2", duration: 45, type: "normal", col: 8 },
+          { name: "Workshop I2", duration: 45, type: "normal", col: 9 },
+          { name: "Workshop J2", duration: 45, type: "normal", col: 10 },
+          { name: "Workshop K2", duration: 45, type: "normal", col: 11 },
+          { name: "Workshop L2", duration: 45, type: "normal", col: 12 },
+          { name: "Workshop M2", duration: 45, type: "normal", col: 13 },
+          { name: "Workshop N2", duration: 45, type: "normal", col: 14 },
+          { name: "Workshop O2", duration: 45, type: "normal", col: 15 }
+        ]
+      },
+      {
+        time: "11:45", events: [
+          { name: "大ブース Workshop A2", duration: 75, type: "large", col: 1 },
+          { name: "大ブース Workshop B2", duration: 75, type: "large", col: 2 },
+          { name: "大ブース Workshop C2", duration: 75, type: "large", col: 3 },
+        ]
+      },
+      {
+        time: "12:15", events: [
+          { name: "Workshop D3", duration: 45, type: "normal", col: 4 },
+          { name: "Workshop E3", duration: 45, type: "normal", col: 5 },
+          { name: "Workshop F3", duration: 45, type: "normal", col: 6 },
+          { name: "Workshop G3", duration: 45, type: "normal", col: 7 },
+          { name: "Workshop H3", duration: 45, type: "normal", col: 8 },
+          { name: "Workshop I3", duration: 45, type: "normal", col: 9 },
+          { name: "Workshop J3", duration: 45, type: "normal", col: 10 },
+          { name: "Workshop K3", duration: 45, type: "normal", col: 11 },
+          { name: "Workshop L3", duration: 45, type: "normal", col: 12 },
+          { name: "Workshop M3", duration: 45, type: "normal", col: 13 },
+          { name: "Workshop N3", duration: 45, type: "normal", col: 14 },
+          { name: "Workshop O3", duration: 45, type: "normal", col: 15 }
+        ]
+      },
+      { time: "13:00", events: [{ name: "昼食休憩", duration: 60, type: "lunch", colSpan: 16 }] },
+      {
+        time: "14:00", events: [
+          { name: "大ブース Workshop A3", duration: 75, type: "large", col: 1 },
+          { name: "大ブース Workshop B3", duration: 75, type: "large", col: 2 },
+          { name: "大ブース Workshop C3", duration: 75, type: "large", col: 3 },
+          { name: "Workshop D4", duration: 45, type: "normal", col: 4 },
+          { name: "Workshop E4", duration: 45, type: "normal", col: 5 },
+          { name: "Workshop F4", duration: 45, type: "normal", col: 6 },
+          { name: "Workshop G4", duration: 45, type: "normal", col: 7 },
+          { name: "Workshop H4", duration: 45, type: "normal", col: 8 },
+          { name: "Workshop I4", duration: 45, type: "normal", col: 9 },
+          { name: "Workshop J4", duration: 45, type: "normal", col: 10 },
+          { name: "Workshop K4", duration: 45, type: "normal", col: 11 },
+          { name: "Workshop L4", duration: 45, type: "normal", col: 12 },
+          { name: "Workshop M4", duration: 45, type: "normal", col: 13 },
+          { name: "Workshop N4", duration: 45, type: "normal", col: 14 },
+          { name: "Workshop O4", duration: 45, type: "normal", col: 15 }
+        ]
+      },
+      {
+        time: "15:00", events: [
+          { name: "Workshop D5", duration: 45, type: "normal", col: 4 },
+          { name: "Workshop E5", duration: 45, type: "normal", col: 5 },
+          { name: "Workshop F5", duration: 45, type: "normal", col: 6 },
+          { name: "Workshop G5", duration: 45, type: "normal", col: 7 },
+          { name: "Workshop H5", duration: 45, type: "normal", col: 8 },
+          { name: "Workshop I5", duration: 45, type: "normal", col: 9 },
+          { name: "Workshop J5", duration: 45, type: "normal", col: 10 },
+          { name: "Workshop K5", duration: 45, type: "normal", col: 11 },
+          { name: "Workshop L5", duration: 45, type: "normal", col: 12 },
+          { name: "Workshop M5", duration: 45, type: "normal", col: 13 },
+          { name: "Workshop N5", duration: 45, type: "normal", col: 14 },
+          { name: "Workshop O5", duration: 45, type: "normal", col: 15 }
+        ]
+      },
+      {
+        time: "15:45", events: [
+          { name: "大ブース Workshop A5", duration: 75, type: "large", col: 1 },
+          { name: "大ブース Workshop B5", duration: 75, type: "large", col: 2 },
+          { name: "大ブース Workshop C5", duration: 75, type: "large", col: 3 },
+        ]
+      },
+      {
+        time: "16:00", events: [
+          { name: "Workshop D6", duration: 45, type: "normal", col: 4 },
+          { name: "Workshop E6", duration: 45, type: "normal", col: 5 },
+          { name: "Workshop F6", duration: 45, type: "normal", col: 6 },
+          { name: "Workshop G6", duration: 45, type: "normal", col: 7 },
+          { name: "Workshop H6", duration: 45, type: "normal", col: 8 },
+          { name: "Workshop I6", duration: 45, type: "normal", col: 9 },
+          { name: "Workshop J6", duration: 45, type: "normal", col: 10 },
+          { name: "Workshop K6", duration: 45, type: "normal", col: 11 },
+          { name: "Workshop L6", duration: 45, type: "normal", col: 12 },
+          { name: "Workshop M6", duration: 45, type: "normal", col: 13 },
+          { name: "Workshop N6", duration: 45, type: "normal", col: 14 },
+          { name: "Workshop O6", duration: 45, type: "normal", col: 15 }
+        ]
+      },
+      { time: "17:15", events: [{ name: "エンディング", duration: 15, type: "ending", colSpan: 16 }] },
+      { time: "17:30", events: [{ name: "参加者退場", duration: 30, type: "exit", colSpan: 16 }] },
+      { time: "18:00", events: [{ name: "会場片付け", duration: 45, type: "cleanup", colSpan: 16 }] },
+      { time: "18:45", events: [{ name: "完全撤収", duration: 15, type: "end", colSpan: 16 }] },
+      { time: "19:00", events: [{ name: "撤収済み", duration: 15, type: "after", colSpan: 16 }] }
+    ];
 
-    // 選択されたワークショップを保存する配列
-    let selectedWorkshops = [];
-
-    // スケジュール表を生成
     // スケジュール表を生成
     const scheduleBody = document.getElementById('schedule-body');
 
+    // 時間ごとにソート
+    scheduleData.sort((a, b) => a.time.localeCompare(b.time));
+
+    // 10:00から19:00までの15分刻みの時間配列を作成
+    const timeSlots = [];
     for (let hour = 10; hour <= 19; hour++) {
       for (let minute = 0; minute < 60; minute += 15) {
         if (hour === 19 && minute > 0) break;
-
-        const timeKey = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-        const row = document.createElement('tr');
-
-        const timeCell = document.createElement('td');
-        timeCell.textContent = timeKey;
-        timeCell.classList.add('time-slot');
-        row.appendChild(timeCell);
-
-        if (scheduleData[timeKey]) {
-          const event = scheduleData[timeKey][0];
-          if (event.type === "opening" || event.type === "ending" || event.type === "lunch" || event.type === "exit" || event.type === "cleanup" || event.type === "end" || event.type === "after") {
-            const cell = document.createElement('td');
-            cell.textContent = event.name;
-            cell.classList.add(event.type);
-            cell.colSpan = 15;
-            cell.rowSpan = event.duration / 15;
-            row.appendChild(cell);
-          } else {
-            const rowSlots = Array(15).fill(null);
-            scheduleData[timeKey].forEach((workshop, index) => {
-              let cell = document.createElement('td');
-              cell.textContent = workshop.name;
-              cell.classList.add(workshop.type || 'workshop');
-              cell.rowSpan = workshop.duration / 15;
-              cell.onclick = () => openModal(workshop.name, timeKey, workshop.duration, cell);
-              if (index < 3) cell.classList.add('large-booth');
-              rowSlots[index] = cell;
-            });
-            rowSlots.forEach(cell => row.appendChild(cell || document.createElement('td')));
-          }
-        } else {
-          for (let i = 0; i < 15; i++) {
-            row.appendChild(document.createElement('td'));
-          }
-        }
-
-        scheduleBody.appendChild(row);
+        timeSlots.push(`${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`);
       }
     }
+
+    // スケジュール表にデータを追加
+    timeSlots.forEach(time => {
+      const row = document.createElement('tr');
+
+      const timeCell = document.createElement('td');
+      timeCell.textContent = time;
+      timeCell.classList.add('time-slot');
+      row.appendChild(timeCell);
+
+      const slot = scheduleData.find(slot => slot.time === time);
+      if (slot) {
+        if (slot.events[0].colSpan) {
+          const cell = document.createElement('td');
+          cell.textContent = slot.events[0].name;
+          cell.classList.add(slot.events[0].type);
+          cell.colSpan = slot.events[0].colSpan;
+          cell.rowSpan = slot.events[0].duration / 15;
+          row.appendChild(cell);
+        } else {
+          const rowSlots = Array(15).fill(null);
+          slot.events.forEach(event => {
+            let cell = document.createElement('td');
+            cell.textContent = event.name;
+            cell.classList.add(event.type);
+            cell.rowSpan = event.duration / 15;
+            cell.onclick = () => openModal(event.name, slot.time, event.duration, cell);
+            rowSlots[event.col - 1] = cell;
+          });
+          rowSlots.forEach(cell => row.appendChild(cell || document.createElement('td')));
+        }
+      } else {
+        for (let i = 0; i < 15; i++) {
+          row.appendChild(document.createElement('td'));
+        }
+      }
+
+      scheduleBody.appendChild(row);
+    });
 
     function openModal(workshop, startTime, duration, cell) {
       const modal = document.getElementById("modal");
       const modalContent = document.getElementById("modal-content");
       const endTime = getEndTime(startTime, duration);
       modalContent.innerHTML = `
-            <h2>${workshop}</h2>
-            <p>開始時刻: ${startTime}</p>
-            <p>終了時刻: ${endTime}</p>
-            <p>定員: ${Math.floor(Math.random() * 30) + 20}人</p>
-            <p>現在の並んでいる人数: ${Math.floor(Math.random() * 30)}人</p>
-            <p>溢れている人数: ${Math.floor(Math.random() * 10)}人</p>
-            <button id="select-workshop">このワークショップを選択</button>
-        `;
+        <h2>${workshop}</h2>
+        <p>開始時刻: ${startTime}</p>
+        <p>終了時刻: ${endTime}</p>
+        <p>定員: ${Math.floor(Math.random() * 30) + 20}人</p>
+        <p>現在の並んでいる人数: ${Math.floor(Math.random() * 30)}人</p>
+        <p>溢れている人数: ${Math.floor(Math.random() * 10)}人</p>
+        <button id="select-workshop">このワークショップを選択</button>
+      `;
 
       modal.style.display = "block";
 
@@ -519,9 +501,9 @@
         const item = document.createElement("div");
         item.classList.add("cart-item");
         item.innerHTML = `
-                <span>${workshop.startTime} - ${workshop.endTime}: ${workshop.workshop}</span>
-                <span class="remove-item" data-index="${index}">×</span>
-            `;
+          <span>${workshop.startTime} - ${workshop.endTime}: ${workshop.workshop}</span>
+          <span class="remove-item" data-index="${index}">×</span>
+        `;
         cartItems.appendChild(item);
       });
 
@@ -555,14 +537,14 @@
       const modal = document.getElementById("modal");
       const modalContent = document.getElementById("modal-content");
       modalContent.innerHTML = `
-                <h2>予約確認</h2>
-                <div id="reservation-summary"></div>
-                <form id="reservation-form">
-                    <label for="email">メールアドレス:</label>
-                    <input type="email" id="email" required>
-                    <button type="submit">予約を確定</button>
-                </form>
-            `;
+        <h2>予約確認</h2>
+        <div id="reservation-summary"></div>
+        <form id="reservation-form">
+          <label for="email">メールアドレス:</label>
+          <input type="email" id="email" required>
+          <button type="submit">予約を確定</button>
+        </form>
+      `;
 
       const summary = document.getElementById("reservation-summary");
       selectedWorkshops.forEach(w => {
