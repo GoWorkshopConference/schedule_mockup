@@ -410,6 +410,7 @@
         } else {
           const rowSlots = Array(15).fill(null);
           slot.events.forEach(event => {
+            console.log(`Processing event: ${event.name} at column ${event.col}`);
             let cell = document.createElement('td');
             cell.textContent = event.name;
             cell.classList.add(event.type);
@@ -417,7 +418,16 @@
             cell.onclick = () => openModal(event.name, slot.time, event.duration, cell);
             rowSlots[event.col - 1] = cell;
           });
-          rowSlots.forEach(cell => row.appendChild(cell || document.createElement('td')));
+
+          console.log('Row slots for time', time, rowSlots);
+
+          rowSlots.forEach((cell, index) => {
+            if (cell) {
+              row.appendChild(cell);
+            } else {
+              row.appendChild(document.createElement('td'));
+            }
+          });
         }
       } else {
         for (let i = 0; i < 15; i++) {
@@ -427,6 +437,9 @@
 
       scheduleBody.appendChild(row);
     });
+
+
+    let selectedWorkshops = [];
 
     function openModal(workshop, startTime, duration, cell) {
       const modal = document.getElementById("modal");
