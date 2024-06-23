@@ -377,7 +377,7 @@
     // スケジュール表を生成
     const scheduleBody = document.getElementById('schedule-body');
 
-    // 時間ごとにソート
+    // 時間早い順にソート
     scheduleData.sort((a, b) => a.time.localeCompare(b.time));
 
     // 10:00から19:00までの15分刻みの時間配列を作成
@@ -400,36 +400,40 @@
 
       const slot = scheduleData.find(slot => slot.time === time);
       if (slot) {
-        if (slot.events[0].colSpan) {
-          const cell = document.createElement('td');
-          cell.textContent = slot.events[0].name;
-          cell.classList.add(slot.events[0].type);
-          cell.colSpan = slot.events[0].colSpan;
-          cell.rowSpan = slot.events[0].duration / 15;
-          row.appendChild(cell);
-        } else {
-          const rowSlots = Array(15).fill(null);
-          slot.events.forEach(event => {
-            console.log(`Processing event: ${event.name} at column ${event.col}`);
+        const rowSlots = Array(15).fill(null);
+
+        slot.events.forEach(event => {
+          if (event.colSpan) {
+            const cell = document.createElement('td');
+            cell.textContent = event.name;
+            cell.classList.add(event.type);
+            cell.colSpan = event.colSpan;
+            cell.rowSpan = event.duration / 15;
+            row.appendChild(cell);
+
+            for (let i = event.col - 1; i < event.col - 1 + event.colSpan; i++) {
+              rowSlots[i] = cell;
+            }
+          } else {
             let cell = document.createElement('td');
             cell.textContent = event.name;
             cell.classList.add(event.type);
             cell.rowSpan = event.duration / 15;
             cell.onclick = () => openModal(event.name, slot.time, event.duration, cell);
             rowSlots[event.col - 1] = cell;
-          });
+          }
+        });
 
-          console.log('Row slots for time', time, rowSlots);
+        rowSlots.forEach((cell, index) => {
+          if (cell && cell.parentNode !== row) {
+            row.appendChild(cell);
+          } else if (!cell) {
+            row.appendChild(document.createElement('td'));
+          }
+        });
 
-          rowSlots.forEach((cell, index) => {
-            if (cell) {
-              row.appendChild(cell);
-            } else {
-              row.appendChild(document.createElement('td'));
-            }
-          });
-        }
       } else {
+        // If no slot for this time, fill with empty cells
         for (let i = 0; i < 15; i++) {
           row.appendChild(document.createElement('td'));
         }
@@ -437,7 +441,6 @@
 
       scheduleBody.appendChild(row);
     });
-
 
     let selectedWorkshops = [];
 
