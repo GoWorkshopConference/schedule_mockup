@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ワークショップスケジュール</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .schedule-container {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 4px;
+      text-align: center;
+      height: 45px;
+      box-sizing: border-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      width: 120px;
+    }
+
+    .time-slot {
+      width: 60px;
+      position: sticky;
+      left: 0;
+      background-color: #fff;
+      z-index: 5;
+    }
+
+    .workshop {
+      background-color: #e6f3ff;
+      cursor: pointer;
+    }
+
+    .workshop:hover {
+      background-color: #cce1ff;
+    }
+
+    .lunch,
+    .opening,
+    .ending,
+    .exit,
+    .cleanup,
+    .end {
+      background-color: #ccffcc;
+      white-space: normal;
+      text-align: left;
+      position: sticky;
+      left: 60px;
+      z-index: 6;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .lunch {
+      background-color: #ffcccc;
+    }
+
+    .large-booth {
+      background-color: #d4edda;
+    }
+
+    .selected {
+      background-color: #ffeb3b;
+    }
+
+    .in-cart {
+      background-color: #ffe0b3;
+    }
+
+    #cart {
+      width: 100%;
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 10px;
+      height: fit-content;
+      margin-top: 20px;
+    }
+
+    #cart h3 {
+      margin-top: 0;
+    }
+
+    #cart-items {
+      margin-bottom: 10px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+
+    .remove-item {
+      color: red;
+      cursor: pointer;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    #message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #f8d7da;
+      color: #721c24;
+      padding: 10px;
+      border-radius: 5px;
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        flex-wrap: nowrap;
+      }
+
+      #cart {
+        width: 22%;
+        margin-top: 0;
+      }
+
+      .schedule-container {
+        width: 75%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>ワークショップスケジュール</h1>
+  <p>日付: <span id="current-date"></span></p>
+  <div class="container">
+    <div class="schedule-container">
+      <table>
+        <thead>
+          <tr>
+            <th class="time-slot">時間</th>
+            <th class="large-booth">大ブース1</th>
+            <th class="large-boース2">大ブース2</th>
+            <th class="large-boース3">大ブース3</th>
+            <th>ブース4</th>
+            <th>ブース5</th>
+            <th>ブース6</th>
+            <th>ブース7</th>
+            <th>ブース8</th>
+            <th>ブース9</th>
+            <th>ブース10</th>
+            <th>ブース11</th>
+            <th>ブース12</th>
+            <th>ブース13</th>
+            <th>ブース14</th>
+            <th>ブース15</th>
+          </tr>
+        </thead>
+        <tbody id="schedule-body">
+          <!-- JavaScriptで動的に生成 -->
+        </tbody>
+      </table>
+    </div>
+
+    <div id="cart">
+      <h3>選択中のワークショップ</h3>
+      <div id="cart-items"></div>
+      <button id="proceed-to-reservation">予約確認へ進む</button>
+    </div>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <div id="message"></div>
+
+  <script>
+    // 現在の日付を設定
+    const currentDate = new Date();
+    document.getElementById('current-date').textContent = currentDate.toLocaleDateString('ja-JP');
+
+    // スケジュールデータ
+    const scheduleData = {
+      "10:00": [{ name: "オープニング", duration: 15, type: "opening" }],
+      "10:15": [
+        { name: "大ブース Workshop A", duration: 60 },
+        { name: "大ブース Workshop B", duration: 60 },
+        { name: "Workshop D", duration: 45 },
+        { name: "Workshop E", duration: 45 },
+        { name: "Workshop F", duration: 45 }
+      ],
+      "11:15": [
+        { name: "大ブース Workshop C", duration: 60 },
+        { name: "大ブース Workshop D", duration: 60 },
+        { name: "Workshop G", duration: 45 },
+        { name: "Workshop H", duration: 45 },
+        { name: "Workshop I", duration: 45 }
+      ],
+      "12:15": [
+        { name: "Workshop J", duration: 45 },
+        { name: "Workshop K", duration: 45 },
+        { name: "Workshop L", duration: 45 }
+      ],
+      "13:00": [{ name: "昼食休憩", duration: 60, type: "lunch" }],
+      "14:15": [
+        { name: "大ブース Workshop E", duration: 60 },
+        { name: "大ブース Workshop F", duration: 60 },
+        { name: "Workshop M", duration: 45 },
+        { name: "Workshop N", duration: 45 },
+        { name: "Workshop O", duration: 45 }
+      ],
+      "15:15": [
+        { name: "大ブース Workshop G", duration: 60 },
+        { name: "大ブース Workshop H", duration: 60 },
+        { name: "Workshop P", duration: 45 },
+        { name: "Workshop Q", duration: 45 },
+        { name: "Workshop R", duration: 45 }
+      ],
+      "16:15": [
+        { name: "Workshop S", duration: 45 },
+        { name: "Workshop T", duration: 45 },
+        { name: "Workshop U", duration: 45 }
+      ],
+      "17:15": [{ name: "エンディング", duration: 15, type: "ending" }],
+      "17:30": [{ name: "参加者退場", duration: 30, type: "exit" }],
+      "18:00": [{ name: "会場片付け", duration: 45, type: "cleanup" }],
+      "18:45": [{ name: "完全撤収", duration: 15, type: "end" }],
+      "19:00": []
+    };
+
+    // 選択されたワークショップを保存する配列
+    let selectedWorkshops = [];
+
+    // スケジュール表を生成
+    const scheduleBody = document.getElementById('schedule-body');
+
+    for (let hour = 10; hour < 19; hour++) {
+      for (let minute = 0; minute < 60; minute += 15) {
+        const timeKey = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        const row = document.createElement('tr');
+
+        const timeCell = document.createElement('td');
+        timeCell.textContent = timeKey;
+        timeCell.classList.add('time-slot');
+        row.appendChild(timeCell);
+
+        if (scheduleData[timeKey]) {
+          const event = scheduleData[timeKey][0];
+          if (event && (event.type === "opening" || event.type === "ending" || event.type === "lunch" || event.type === "exit" || event.type === "cleanup" || event.type === "end")) {
+            const cell = document.createElement('td');
+            cell.textContent = event.name;
+            cell.classList.add(event.type);
+            cell.colSpan = 15;
+            row.appendChild(cell);
+
+            // 複数行にわたる場合
+            for (let i = 1; i < event.duration / 15; i++) {
+              const nextRow = document.createElement('tr');
+              nextRow.appendChild(document.createElement('td')); // 時間列の空セル
+              const nextCell = document.createElement('td');
+              nextCell.classList.add(event.type);
+              nextCell.colSpan = 15;
+              row.parentNode.insertBefore(nextRow, row.nextSibling);
+            }
+
+          } else {
+            const rowSlots = Array(15).fill(null);
+            scheduleData[timeKey].forEach((workshop, index) => {
+              let cell = document.createElement('td');
+              cell.textContent = workshop.name;
+              cell.classList.add(workshop.type || 'workshop');
+              cell.rowSpan = workshop.duration / 15;
+              cell.onclick = () => openModal(workshop.name, timeKey, workshop.duration, cell);
+              if (index < 3) cell.classList.add('large-booth');
+              rowSlots[index] = cell;
+            });
+            rowSlots.forEach(cell => row.appendChild(cell || document.createElement('td')));
+          }
+        } else {
+          for (let i = 0; i < 15; i++) {
+            row.appendChild(document.createElement('td'));
+          }
+        }
+
+        scheduleBody.appendChild(row);
+      }
+    }
+
+    function openModal(workshop, startTime, duration, cell) {
+      const modal = document.getElementById("modal");
+      const modalContent = document.getElementById("modal-content");
+      const endTime = getEndTime(startTime, duration);
+      modalContent.innerHTML = `
+            <h2>${workshop}</h2>
+            <p>開始時刻: ${startTime}</p>
+            <p>終了時刻: ${endTime}</p>
+            <p>定員: ${Math.floor(Math.random() * 30) + 20}人</p>
+            <p>現在の並んでいる人数: ${Math.floor(Math.random() * 30)}人</p>
+            <p>溢れている人数: ${Math.floor(Math.random() * 10)}人</p>
+            <button id="select-workshop">このワークショップを選択</button>
+        `;
+
+      modal.style.display = "block";
+
+      document.getElementById("select-workshop").onclick = function () {
+        selectWorkshop(workshop, startTime, endTime, cell);
+        modal.style.display = "none";
+      };
+
+      const span = document.getElementsByClassName("close")[0];
+      span.onclick = function () {
+        modal.style.display = "none";
+      }
+
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    }
+
+    function getEndTime(startTime, duration) {
+      const [hours, minutes] = startTime.split(':').map(Number);
+      const endDate = new Date(2024, 0, 1, hours, minutes + duration);
+      return endDate.toTimeString().slice(0, 5);
+    }
+
+    function selectWorkshop(workshop, startTime, endTime, cell) {
+      if (isTimeConflict(workshop, startTime, endTime)) {
+        showMessage("選択した時間帯に既に他のワークショップが選択されているか、昼休憩と重複しています。");
+      } else {
+        selectedWorkshops.push({ workshop, startTime, endTime });
+        cell.classList.add('in-cart');
+        updateCart();
+      }
+    }
+
+    function isTimeConflict(newWorkshop, newStart, newEnd) {
+      return selectedWorkshops.some(workshop => (newStart < workshop.endTime && workshop.startTime < newEnd));
+    }
+
+    function showMessage(text) {
+      const message = document.getElementById("message");
+      message.textContent = text;
+      message.style.display = "block";
+      setTimeout(() => {
+        message.style.display = "none";
+      }, 3000);
+    }
+
+    function updateCart() {
+      const cartItems = document.getElementById("cart-items");
+      cartItems.innerHTML = "";
+
+      // 時間順にソート
+      selectedWorkshops.sort((a, b) => a.startTime.localeCompare(b.startTime));
+
+      selectedWorkshops.forEach((workshop, index) => {
+        const item = document.createElement("div");
+        item.classList.add("cart-item");
+        item.innerHTML = `
+                <span>${workshop.startTime} - ${workshop.endTime}: ${workshop.workshop}</span>
+                <span class="remove-item" data-index="${index}">×</span>
+            `;
+        cartItems.appendChild(item);
+      });
+
+      document.querySelectorAll(".remove-item").forEach(button => {
+        button.onclick = function () {
+          removeFromCart(parseInt(this.dataset.index));
+        };
+      });
+    }
+
+    function removeFromCart(index) {
+      const workshop = selectedWorkshops[index];
+      const timeKey = workshop.startTime;
+      const cell = [...document.querySelectorAll(`td`)].find(td => td.textContent === workshop.workshop && td.parentNode.firstChild.textContent === timeKey);
+      if (cell) {
+        cell.classList.remove('in-cart');
+      }
+      selectedWorkshops.splice(index, 1);
+      updateCart();
+    }
+
+    document.getElementById("proceed-to-reservation").onclick = function () {
+      if (selectedWorkshops.length === 0) {
+        showMessage("ワークショップを選択してください。");
+        return;
+      }
+      openReservationModal();
+    };
+
+    function openReservationModal() {
+      const modal = document.getElementById("modal");
+      const modalContent = document.getElementById("modal-content");
+      modalContent.innerHTML = `
+                <h2>予約確認</h2>
+                <div id="reservation-summary"></div>
+                <form id="reservation-form">
+                    <label for="email">メールアドレス:</label>
+                    <input type="email" id="email" required>
+                    <button type="submit">予約を確定</button>
+                </form>
+            `;
+
+      const summary = document.getElementById("reservation-summary");
+      selectedWorkshops.forEach(w => {
+        summary.innerHTML += `<p>${w.startTime} - ${w.endTime}: ${w.workshop}</p>`;
+      });
+
+      document.getElementById("reservation-form").onsubmit = function (e) {
+        e.preventDefault();
+        const email = document.getElementById("email").value;
+
+        // ローカルストレージに予約情報を保存
+        localStorage.setItem('reservations', JSON.stringify({
+          email: email,
+          workshops: selectedWorkshops
+        }));
+
+        showMessage("予約が完了しました。確認メールを送信しました（擬似的な処理です）。");
+
+        // フォームをリセット
+        this.reset();
+        selectedWorkshops = [];
+        updateCart();
+        modal.style.display = "none";
+      };
+
+      modal.style.display = "block";
+    }
+
+    // ページ読み込み時の処理
+    window.onload = function () {
+      const savedReservations = localStorage.getItem('reservations');
+      if (savedReservations) {
+        const reservations = JSON.parse(savedReservations);
+        console.log("保存された予約情報:", reservations);
+        // ここで保存された予約情報を表示するUIを追加することができます
+      }
+      updateCart();
+    }
+  </script>
+</body>
+
+</html>
