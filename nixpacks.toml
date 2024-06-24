@@ -1,0 +1,11 @@
+[default]
+entrypoint = "npx serve -s . -l ${PORT}"
+
+[phases.setup]
+aptPkgs = ["nodejs", "npm"]
+
+[phases.build]
+run = ["npm install"]
+
+[phases.start]
+run = ["npx serve -s . -l ${PORT}"]
