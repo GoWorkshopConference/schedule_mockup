@@ -1,6 +1,6 @@
 body {
   font-family: 'Arial', sans-serif;
-  margin: 20px;
+  margin: 6px;
   background-color: #f4f4f9;
   color: #333;
 }
@@ -15,7 +15,7 @@ body {
 table {
   border-collapse: collapse;
   width: 100%;
-  min-width: 1200px; /* 必要に応じて調整 */
+  min-width: 1200px;
   background-color: #fff;
   border-radius: 8px;
 }
@@ -24,8 +24,8 @@ th, td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
-  min-width: 120px; /* 必要に応じて調整 */
-  height: 40px; /* 必要に応じて調整 */
+  min-width: 120px;
+  height: 40px;
   background-clip: padding-box;
 }
 
