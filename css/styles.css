@@ -1,0 +1,70 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 20px;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+.table-container {
+  overflow-x: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 1200px; /* 必要に応じて調整 */
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  min-width: 120px; /* 必要に応じて調整 */
+  height: 40px; /* 必要に応じて調整 */
+  background-clip: padding-box;
+}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+td:first-child, th:first-child {
+  position: sticky;
+  left: 0;
+  background-color: #3E8E41;
+  color: white;
+  z-index: 11;
+  border-right: 1px solid #ddd;
+}
+
+td {
+  background-color: white;
+  transition: background-color 0.3s ease;
+}
+
+td:hover {
+  background-color: #f1f1f1;
+}
+
+tr {
+  border-bottom: 1px solid #ddd;
+}
+
+tr:first-child > td:not(:first-child) {
+  background-color: #59bb5e;
+  color: white;
+}
+
+tr:last-child {
+  border-bottom: none;
+}

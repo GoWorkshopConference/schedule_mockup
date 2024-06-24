@@ -11,7 +11,7 @@ for (let hour = 10; hour <= 19; hour++) {
     );
   }
 }
-const booths = Array.from({ length: 15 }, (_, i) => i + 1);
+const booths = Array.from({ length: 15 }, (_, i) => `ブース${i + 1}`);
 
 function createTable() {
   const table = document.getElementById("timeBoothTable");
