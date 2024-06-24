@@ -37,7 +37,7 @@
     }
     const booths = Array.from({ length: 15 }, (_, i) => i + 1);
 
-    // サンプルデータ（実際のデータに置き換えてください）
+    // スケジュールデータ
     const data = [
       // 共通イベント
       { time: '10:00', booth: 1, value: 'オープニング', horizontal: true },
@@ -132,7 +132,6 @@
       { time: "16:15", booth: 4, value: 'ブース4 WorkShopF' },
       { time: "16:30", booth: 4, value: 'ブース4 WorkShopF' },
       { time: "16:45", booth: 4, value: 'ブース4 WorkShopF' },
-
       // ブース5
       { time: "10:15", booth: 5, value: 'ブース5 WorkShopA' },
       { time: "10:30", booth: 5, value: 'ブース5 WorkShopA' },
@@ -152,7 +151,6 @@
       { time: "16:15", booth: 5, value: 'ブース5 WorkShopF' },
       { time: "16:30", booth: 5, value: 'ブース5 WorkShopF' },
       { time: "16:45", booth: 5, value: 'ブース5 WorkShopF' },
-
       // ブース6
       { time: "10:15", booth: 6, value: 'ブース6 WorkShopA' },
       { time: "10:30", booth: 6, value: 'ブース6 WorkShopA' },
@@ -172,7 +170,6 @@
       { time: "16:15", booth: 6, value: 'ブース6 WorkShopF' },
       { time: "16:30", booth: 6, value: 'ブース6 WorkShopF' },
       { time: "16:45", booth: 6, value: 'ブース6 WorkShopF' },
-
       // ブース7
       { time: "10:15", booth: 7, value: 'ブース7 WorkShopA' },
       { time: "10:30", booth: 7, value: 'ブース7 WorkShopA' },
@@ -192,7 +189,6 @@
       { time: "16:15", booth: 7, value: 'ブース7 WorkShopF' },
       { time: "16:30", booth: 7, value: 'ブース7 WorkShopF' },
       { time: "16:45", booth: 7, value: 'ブース7 WorkShopF' },
-
       // ブース8
       { time: "10:15", booth: 8, value: 'ブース8 WorkShopA' },
       { time: "10:30", booth: 8, value: 'ブース8 WorkShopA' },
@@ -212,7 +208,6 @@
       { time: "16:15", booth: 8, value: 'ブース8 WorkShopF' },
       { time: "16:30", booth: 8, value: 'ブース8 WorkShopF' },
       { time: "16:45", booth: 8, value: 'ブース8 WorkShopF' },
-
       // ブース9
       { time: "10:15", booth: 9, value: 'ブース9 WorkShopA' },
       { time: "10:30", booth: 9, value: 'ブース9 WorkShopA' },
@@ -232,7 +227,6 @@
       { time: "16:15", booth: 9, value: 'ブース9 WorkShopF' },
       { time: "16:30", booth: 9, value: 'ブース9 WorkShopF' },
       { time: "16:45", booth: 9, value: 'ブース9 WorkShopF' },
-
       // ブース10
       { time: "10:15", booth: 10, value: 'ブース10 WorkShopA' },
       { time: "10:30", booth: 10, value: 'ブース10 WorkShopA' },
@@ -252,7 +246,6 @@
       { time: "16:15", booth: 10, value: 'ブース10 WorkShopF' },
       { time: "16:30", booth: 10, value: 'ブース10 WorkShopF' },
       { time: "16:45", booth: 10, value: 'ブース10 WorkShopF' },
-
       // ブース11
       { time: "10:15", booth: 11, value: 'ブース11 WorkShopA' },
       { time: "10:30", booth: 11, value: 'ブース11 WorkShopA' },
@@ -272,7 +265,6 @@
       { time: "16:15", booth: 11, value: 'ブース11 WorkShopF' },
       { time: "16:30", booth: 11, value: 'ブース11 WorkShopF' },
       { time: "16:45", booth: 11, value: 'ブース11 WorkShopF' },
-
       // ブース12
       { time: "10:15", booth: 12, value: 'ブース12 WorkShopA' },
       { time: "10:30", booth: 12, value: 'ブース12 WorkShopA' },
@@ -292,7 +284,6 @@
       { time: "16:15", booth: 12, value: 'ブース12 WorkShopF' },
       { time: "16:30", booth: 12, value: 'ブース12 WorkShopF' },
       { time: "16:45", booth: 12, value: 'ブース12 WorkShopF' },
-
       // ブース13
       { time: "10:15", booth: 13, value: 'ブース13 WorkShopA' },
       { time: "10:30", booth: 13, value: 'ブース13 WorkShopA' },
@@ -312,7 +303,6 @@
       { time: "16:15", booth: 13, value: 'ブース13 WorkShopF' },
       { time: "16:30", booth: 13, value: 'ブース13 WorkShopF' },
       { time: "16:45", booth: 13, value: 'ブース13 WorkShopF' },
-
       // ブース14
       { time: "10:15", booth: 14, value: 'ブース14 WorkShopA' },
       { time: "10:30", booth: 14, value: 'ブース14 WorkShopA' },
@@ -332,7 +322,6 @@
       { time: "16:15", booth: 14, value: 'ブース14 WorkShopF' },
       { time: "16:30", booth: 14, value: 'ブース14 WorkShopF' },
       { time: "16:45", booth: 14, value: 'ブース14 WorkShopF' },
-
       // ブース15
       { time: "10:15", booth: 15, value: 'ブース15 WorkShopA' },
       { time: "10:30", booth: 15, value: 'ブース15 WorkShopA' },
