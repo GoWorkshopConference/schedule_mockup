@@ -167,21 +167,26 @@ tr:last-child {
   background-color: #4b93a7;
   border-radius: 5px;
   padding: 10px;
+  opacity: 0.6;
 }
-
+.cart-toggle-container:hover {
+  opacity: 1;
+}
 .toggle-button {
   position: relative;
   padding: 10px 20px;
-  background-color: #4b93a7;
+  background-color: rgba(75, 147, 167, 0.6);
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  opacity: 0.6;
 }
 
 .toggle-button:hover {
   background-color: #226986;
+  opacity: 1;
 }
 
 .cart-count {
