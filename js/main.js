@@ -350,20 +350,28 @@ function confirmReservation() {
   document.getElementById("email").value = "";
   document.getElementById("confirmModal").style.display = "none";
   document.getElementById("cartContainer").style.display = "none";
+
+  // パネルの選択解除
+  const eventCells = document.querySelectorAll("td");
+  eventCells.forEach((cell) => {
+    cell.style.backgroundColor = "";
+    cell.style.color = "";
+  });
 }
 
 function toggleCart() {
   const cartContainer = document.getElementById("cartContainer");
   const toggleCartButton = document.getElementById("toggleCartButton");
-  if (cartContainer.style.display === "none") {
+  if (
+    cartContainer.style.display === "none" ||
+    cartContainer.style.display === ""
+  ) {
     cartContainer.style.display = "flex";
-    toggleCartButton.textContent = "リスト非表示";
+    toggleCartButton.innerHTML = `リスト非表示 <span id="cartCount" class="cart-count">${cart.length}</span>`;
   } else {
     cartContainer.style.display = "none";
-    toggleCartButton.textContent = "リスト表示";
+    toggleCartButton.innerHTML = `リスト表示 <span id="cartCount" class="cart-count">${cart.length}</span>`;
   }
-  const cartCount = document.getElementById("cartCount");
-  cartCount.textContent = cart.length;
 }
 
 document.getElementById("lineUpButton").addEventListener("click", addToCart);
