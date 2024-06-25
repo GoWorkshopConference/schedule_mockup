@@ -144,6 +144,13 @@ function populate_table(table, times, booths, cell_data) {
         }
       }
     }
+
+    // rowの中のtd要素のtextContentが空ならbreakクラスを付与
+    Array.from(row.cells).forEach((cell) => {
+      if (!cell.textContent) {
+        cell.classList.add("break");
+      }
+    });
   }
 }
 

@@ -52,7 +52,7 @@ td {
   transition: background-color 0.3s ease;
 }
 
-td:hover:not(:first-child) {
+td:hover:not(:first-child):not(.break) {
   background-color: #f1f1f1;
 }
 
