@@ -4,9 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>GWC2025タイムテーブル</title>
-
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 
@@ -14,6 +12,39 @@
   <div class="table-container">
     <table id="timeBoothTable"></table>
   </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <div id="eventDetails"></div>
+      <button id="lineUpButton" class="action-button">並ぶ</button>
+    </div>
+  </div>
+
+  <div id="confirmModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" id="closeConfirmModal">&times;</span>
+      <h3>予約確認</h3>
+      <ul id="confirmList"></ul>
+      <label for="email">メールアドレス:</label>
+      <input type="email" id="email" required>
+      <button id="confirmReservationButton" class="action-button">予約確定</button>
+    </div>
+  </div>
+
+  <div class="cart-toggle-container">
+    <button id="toggleCartButton" class="toggle-button">
+      リスト表示 <span id="cartCount" class="cart-count">0</span>
+    </button>
+  </div>
+
+  <div id="cartContainer" class="cart-container">
+    <h3>選択中</h3>
+    <ul id="cartList"></ul>
+    <button id="confirmButton" class="action-button">予約確認</button>
+  </div>
+
+  <div id="notification" class="notification"></div>
 
   <script type="module" src="./js/main.js"></script>
 </body>
