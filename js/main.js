@@ -21,7 +21,8 @@ function generate_booths(count) {
 
 function create_header_row(table, booths) {
   const header_row = table.insertRow();
-  header_row.insertCell().textContent = "時間\\ブース";
+  const currentDate = new Date();
+  header_row.insertCell().textContent = currentDate.toLocaleDateString("ja-JP");
   booths.forEach((booth) => {
     header_row.insertCell().textContent = booth;
   });
@@ -140,6 +141,7 @@ function populate_table(table, times, booths, cell_data) {
           }
           if (cell_data_item.colspan > 1) {
             cell.colSpan = cell_data_item.colspan;
+            cell.classList.add("band");
           }
         }
       }

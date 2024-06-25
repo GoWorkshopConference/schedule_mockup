@@ -1,13 +1,13 @@
 body {
   font-family: 'Arial', sans-serif;
   margin: 6px;
-  background-color: #fffefd;
-  color: #333;
+  background-color: #ffffff;
+  color: #113760;
 }
 
 .table-container {
   overflow-x: auto;
-  border: 1px solid #ddd;
+  border: 1px solid #c8d1d4;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -16,12 +16,12 @@ table {
   border-collapse: collapse;
   width: 100%;
   min-width: 1200px;
-  background-color: #fffefd;
+  background-color: #ffffff;
   border-radius: 8px;
 }
 
 th, td {
-  border: 1px solid #ddd;
+  border: 1px solid #c8d1d4;
   padding: 10px;
   text-align: center;
   min-width: 120px;
@@ -30,8 +30,8 @@ th, td {
 }
 
 th {
-  background-color: #4CAF50;
-  color: #fffefd;
+  background-color: #4b93a7;
+  color: #ffffff;
   font-weight: bold;
   position: sticky;
   top: 0;
@@ -41,28 +41,29 @@ th {
 td:first-child, th:first-child {
   position: sticky;
   left: 0;
-  background-color: #739c97;
-  color: #fffefd;
+  background-color: #4b93a7;
+  color: #ffffff;
   z-index: 11;
-  border-right: 1px solid #ddd;
+  border-right: 1px solid #c8d1d4;
 }
 
 td {
-  background-color: #fffefd;
+  background-color: #ffffff;
   transition: background-color 0.3s ease;
 }
 
-td:hover:not(:first-child):not(.break) {
-  background-color: #f1f1f1;
+td:hover:not(:first-child):not(.break):not(tr:first-child > td):not(.band) {
+  background-color: #226986;
+  color: #ffffff;
 }
 
 tr {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #c8d1d4;
 }
 
 tr:first-child > td:not(:first-child) {
-  background-color: #ecaa28;
-  color: #fffefd;
+  background-color: #113760;
+  color: #ffffff;
 }
 
 tr:last-child {
@@ -70,5 +71,13 @@ tr:last-child {
 }
 
 .break {
-  background-color: #616161;
+  background-color: #a3b9c4;
+}
+
+.band {
+  background-color: #7fbaa7;
+  text-align: left;
+  font-size: 1em;
+  font-weight: 500;
+  color: #ffffff;
 }
