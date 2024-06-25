@@ -8,12 +8,14 @@ body {
 .table-container {
   overflow-x: auto;
   border: 1px solid #c8d1d4;
-  border-radius: 8px;
+  border-radius: 14px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 table {
+  /* border-collapse: separate; */
   border-collapse: collapse;
+  border-spacing: 0;
   width: 100%;
   min-width: 1200px;
   background-color: #ffffff;
