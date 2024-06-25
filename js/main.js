@@ -1,50 +1,57 @@
 import schedules from "./schedules.js";
 
-const times = [];
-for (let hour = 10; hour <= 19; hour++) {
-  for (let minute = 0; minute < 60; minute += 15) {
-    if (hour === 19 && minute > 0) break; // 19:00で終了
-    times.push(
-      `${hour.toString().padStart(2, "0")}:${minute
-        .toString()
-        .padStart(2, "0")}`
-    );
+function generate_times() {
+  const times = [];
+  for (let hour = 10; hour <= 19; hour++) {
+    for (let minute = 0; minute < 60; minute += 15) {
+      if (hour === 19 && minute > 0) break; // 19:00で終了
+      times.push(
+        `${hour.toString().padStart(2, "0")}:${minute
+          .toString()
+          .padStart(2, "0")}`
+      );
+    }
   }
+  return times;
 }
-const booths = Array.from({ length: 15 }, (_, i) => `ブース${i + 1}`);
 
-function createTable() {
-  const table = document.getElementById("timeBoothTable");
+function generate_booths(count) {
+  return Array.from({ length: count }, (_, i) => `ブース${i + 1}`);
+}
 
-  // ヘッダー行を作成
-  const headerRow = table.insertRow();
-  headerRow.insertCell().textContent = "時間\\ブース";
+function create_header_row(table, booths) {
+  const header_row = table.insertRow();
+  header_row.insertCell().textContent = "時間\\ブース";
   booths.forEach((booth) => {
-    headerRow.insertCell().textContent = booth;
+    header_row.insertCell().textContent = booth;
   });
+}
 
-  // データ行を作成し、データを埋める
-  const cellData = Array.from({ length: times.length }, () =>
+function create_initial_cell_data(times, booths) {
+  return Array.from({ length: times.length }, () =>
     Array(booths.length).fill(null)
   );
-  const usedCells = new Set();
+}
+
+function update_cell_data(cell_data, schedules, times, booths) {
+  const used_cells = new Set();
 
   schedules.forEach((item) => {
-    const rowIndex = times.indexOf(item.time);
-    const colIndex = item.booth - 1;
-    const cellKey = `${rowIndex},${colIndex}`;
+    const row_index = times.indexOf(item.time);
+    const col_index = item.booth - 1;
+    const cell_key = `${row_index},${col_index}`;
 
-    if (!usedCells.has(cellKey)) {
-      cellData[rowIndex][colIndex] = {
+    if (!used_cells.has(cell_key)) {
+      cell_data[row_index][col_index] = {
         text: item.value,
         rowspan: 1,
         colspan: 1,
       };
-      usedCells.add(cellKey);
+      used_cells.add(cell_key);
 
       // 縦方向の結合をチェック
       let rowspan = 1;
-      for (let i = rowIndex + 1; i < times.length; i++) {
+      for (let i = row_index + 1; i < times.length; i++) {
         if (
           schedules.some(
             (d) =>
@@ -53,20 +60,20 @@ function createTable() {
               d.value === item.value
           )
         ) {
-          const existingCellKey = `${i},${colIndex}`;
-          if (usedCells.has(existingCellKey)) {
-            usedCells.delete(existingCellKey);
+          const existing_cell_key = `${i},${col_index}`;
+          if (used_cells.has(existing_cell_key)) {
+            used_cells.delete(existing_cell_key);
           }
           rowspan++;
-          usedCells.add(existingCellKey);
+          used_cells.add(existing_cell_key);
         } else {
           break;
         }
       }
       if (rowspan > 1) {
-        cellData[rowIndex][colIndex].rowspan = rowspan;
+        cell_data[row_index][col_index].rowspan = rowspan;
         for (let i = 1; i < rowspan; i++) {
-          cellData[rowIndex + i][colIndex] = undefined;
+          cell_data[row_index + i][col_index] = undefined;
         }
       }
 
@@ -74,34 +81,34 @@ function createTable() {
       if (item.horizontal) {
         let colspan = booths.length;
         for (let j = 0; j < booths.length; j++) {
-          const existingCellKey = `${rowIndex},${j}`;
-          if (usedCells.has(existingCellKey)) {
-            usedCells.delete(existingCellKey);
+          const existing_cell_key = `${row_index},${j}`;
+          if (used_cells.has(existing_cell_key)) {
+            used_cells.delete(existing_cell_key);
           }
-          if (j !== colIndex) {
-            cellData[rowIndex][j] = undefined;
+          if (j !== col_index) {
+            cell_data[row_index][j] = undefined;
           }
-          usedCells.add(existingCellKey);
+          used_cells.add(existing_cell_key);
         }
 
         // 縦方向の結合も考慮
-        let additionalRowSpan = 1;
-        for (let i = rowIndex + 1; i < times.length; i++) {
+        let additional_rowspan = 1;
+        for (let i = row_index + 1; i < times.length; i++) {
           if (
             schedules.some(
               (d) =>
                 d.time === times[i] && d.value === item.value && d.horizontal
             )
           ) {
-            additionalRowSpan++;
+            additional_rowspan++;
             for (let j = 0; j < booths.length; j++) {
-              const existingCellKey = `${i},${j}`;
-              if (usedCells.has(existingCellKey)) {
-                usedCells.delete(existingCellKey);
+              const existing_cell_key = `${i},${j}`;
+              if (used_cells.has(existing_cell_key)) {
+                used_cells.delete(existing_cell_key);
               }
-              usedCells.add(existingCellKey);
-              if (j !== colIndex) {
-                cellData[i][j] = undefined;
+              used_cells.add(existing_cell_key);
+              if (j !== col_index) {
+                cell_data[i][j] = undefined;
               }
             }
           } else {
@@ -109,29 +116,30 @@ function createTable() {
           }
         }
 
-        cellData[rowIndex][colIndex].colspan = colspan;
-        cellData[rowIndex][colIndex].rowspan = additionalRowSpan;
+        cell_data[row_index][col_index].colspan = colspan;
+        cell_data[row_index][col_index].rowspan = additional_rowspan;
       }
     }
   });
+}
 
-  // テーブルにデータを埋め込む
+function populate_table(table, times, booths, cell_data) {
   for (let i = 0; i < times.length; i++) {
     const row = table.insertRow();
-    const timeCell = row.insertCell();
-    timeCell.textContent = times[i];
+    const time_cell = row.insertCell();
+    time_cell.textContent = times[i];
 
     for (let j = 0; j < booths.length; j++) {
-      const cellDataItem = cellData[i][j];
-      if (cellDataItem !== undefined) {
+      const cell_data_item = cell_data[i][j];
+      if (cell_data_item !== undefined) {
         const cell = row.insertCell();
-        if (cellDataItem) {
-          cell.textContent = cellDataItem.text;
-          if (cellDataItem.rowspan > 1) {
-            cell.rowSpan = cellDataItem.rowspan;
+        if (cell_data_item) {
+          cell.textContent = cell_data_item.text;
+          if (cell_data_item.rowspan > 1) {
+            cell.rowSpan = cell_data_item.rowspan;
           }
-          if (cellDataItem.colspan > 1) {
-            cell.colSpan = cellDataItem.colspan;
+          if (cell_data_item.colspan > 1) {
+            cell.colSpan = cell_data_item.colspan;
           }
         }
       }
@@ -139,4 +147,18 @@ function createTable() {
   }
 }
 
-createTable();
+function create_table() {
+  const times = generate_times();
+  const booths = generate_booths(15);
+  const table = document.getElementById("timeBoothTable");
+
+  create_header_row(table, booths);
+
+  const cell_data = create_initial_cell_data(times, booths);
+
+  update_cell_data(cell_data, schedules, times, booths);
+
+  populate_table(table, times, booths, cell_data);
+}
+
+create_table();
